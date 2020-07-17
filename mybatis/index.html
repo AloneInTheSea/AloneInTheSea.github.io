@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Mybatis // My Blog</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.74.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="John Doe" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://AloneInTheSea.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mybatis"/>
+<meta name="twitter:description" content="Mybatis 1、简介 1.1、什么是Mybatis？  MyBatis 是一款优秀的持久层框架 它支持定制化 SQL、存储过程以及高级映射。 MyBatis 避免了几乎所有的 JDBC代码和手动设置参数以及获取结果集。 MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。  1.2、如何获取Mybatis？   maven仓库
+&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt; &lt;dependency&gt; &lt;groupId&gt;org.mybatis&lt;/groupId&gt; &lt;artifactId&gt;mybatis&lt;/artifactId&gt; &lt;version&gt;3.5.0&lt;/version&gt; &lt;/dependency&gt;   Github：https://github.com/mybatis/mybatis-3/releases
+  官方中文文档：https://mybatis.org/mybatis-3/zh/index.html
+  2、第一个Mybatis程序  七步走：  2.1、建立数据库 create database mybatis; use mybatis; create table user( -&gt; id int(20) not null primary key, -&gt; name varchar(20) default &#39;&#39;, -&gt; password varchar(20) default &#39;&#39;); insert into user values -&gt; (1,&#39;yxc&#39;,&#39;123456&#39;), -&gt; (2,&#39;张三&#39;,&#39;123456&#39;), -&gt; (3,&#39;李四&#39;,&#39;123456&#39;); 2."/>
+
+    <meta property="og:title" content="Mybatis" />
+<meta property="og:description" content="Mybatis 1、简介 1.1、什么是Mybatis？  MyBatis 是一款优秀的持久层框架 它支持定制化 SQL、存储过程以及高级映射。 MyBatis 避免了几乎所有的 JDBC代码和手动设置参数以及获取结果集。 MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。  1.2、如何获取Mybatis？   maven仓库
+&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt; &lt;dependency&gt; &lt;groupId&gt;org.mybatis&lt;/groupId&gt; &lt;artifactId&gt;mybatis&lt;/artifactId&gt; &lt;version&gt;3.5.0&lt;/version&gt; &lt;/dependency&gt;   Github：https://github.com/mybatis/mybatis-3/releases
+  官方中文文档：https://mybatis.org/mybatis-3/zh/index.html
+  2、第一个Mybatis程序  七步走：  2.1、建立数据库 create database mybatis; use mybatis; create table user( -&gt; id int(20) not null primary key, -&gt; name varchar(20) default &#39;&#39;, -&gt; password varchar(20) default &#39;&#39;); insert into user values -&gt; (1,&#39;yxc&#39;,&#39;123456&#39;), -&gt; (2,&#39;张三&#39;,&#39;123456&#39;), -&gt; (3,&#39;李四&#39;,&#39;123456&#39;); 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://AloneInTheSea.github.io/mybatis/" />
+<meta property="article:published_time" content="2020-07-17T18:32:08+08:00" />
+<meta property="article:modified_time" content="2020-07-17T18:32:08+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://AloneInTheSea.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="John Doe" /></a>
+      <h1>My Blog</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula turpis sit amet elit pretium.</p>
+      <div class="app-header-social">
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Mybatis</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jul 17, 2020
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          11 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      <h1 id="mybatis">Mybatis</h1>
+<h2 id="1简介">1、简介</h2>
+<h3 id="11什么是mybatis">1.1、什么是Mybatis？</h3>
+<p><img src="Mybatis.assets/mybatis-logo.png" alt="img"></p>
+<ul>
+<li>MyBatis 是一款优秀的<strong>持久层</strong>框架</li>
+<li>它支持<strong>定制化 SQL</strong>、<strong>存储过程</strong>以及<strong>高级映射</strong>。</li>
+<li>MyBatis 避免了几乎所有的 JDBC代码和手动设置参数以及获取结果集。</li>
+<li>MyBatis 可以<strong>使用简单的 XML 或注解来配置和映射原生信息</strong>，将接口和 Java 的  POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。</li>
+</ul>
+<h3 id="12如何获取mybatis">1.2、如何获取Mybatis？</h3>
+<ul>
+<li>
+<p>maven仓库</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.mybatis<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mybatis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>3.5.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><pre><code>
+	
+
+</code></pre></li>
+<li>
+<p>Github：https://github.com/mybatis/mybatis-3/releases</p>
+</li>
+<li>
+<p>官方中文文档：https://mybatis.org/mybatis-3/zh/index.html</p>
+</li>
+</ul>
+<h2 id="2第一个mybatis程序">2、第一个Mybatis程序</h2>
+<ul>
+<li>七步走：</li>
+</ul>
+<p><img src="Mybatis.assets/1587401192371.png" alt="1587401192371"></p>
+<h3 id="21建立数据库">2.1、建立数据库</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">database</span> mybatis;
+use mybatis;
+
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">user</span>(
+   <span style="color:#f92672">-&gt;</span> id int(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+   <span style="color:#f92672">-&gt;</span> name varchar(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#39;&#39;</span>,
+   <span style="color:#f92672">-&gt;</span> password varchar(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#39;&#39;</span>);
+    
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> <span style="color:#66d9ef">user</span> <span style="color:#66d9ef">values</span>
+   <span style="color:#f92672">-&gt;</span> (<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">&#39;yxc&#39;</span>,<span style="color:#e6db74">&#39;123456&#39;</span>),
+   <span style="color:#f92672">-&gt;</span> (<span style="color:#ae81ff">2</span>,<span style="color:#e6db74">&#39;张三&#39;</span>,<span style="color:#e6db74">&#39;123456&#39;</span>),
+   <span style="color:#f92672">-&gt;</span> (<span style="color:#ae81ff">3</span>,<span style="color:#e6db74">&#39;李四&#39;</span>,<span style="color:#e6db74">&#39;123456&#39;</span>);
+</code></pre></div><h3 id="22搭建环境">2.2、搭建环境</h3>
+<ol>
+<li>
+<p>建立普通maven项目</p>
+</li>
+<li>
+<p>删除src目录</p>
+</li>
+<li>
+<p>导入依赖</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>mysql<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mysql-connector-java<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>8.0.18<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+   
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.mybatis<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mybatis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>3.5.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+   
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>4.12<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>`</p>
+</li>
+<li>
+<p>建立子模块</p>
+</li>
+<li>
+<p>编写核心配置文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE configuration
+</span><span style="color:#75715e">        PUBLIC &#34;-//mybatis.org//DTD Config 3.0//EN&#34;
+</span><span style="color:#75715e">        &#34;http://mybatis.org/dtd/mybatis-3-config.dtd&#34;&gt;</span>
+<span style="color:#75715e">&lt;!--configuration核心配置文件--&gt;</span>
+<span style="color:#f92672">&lt;configuration&gt;</span>
+   
+    <span style="color:#f92672">&lt;environments</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;development&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;environment</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;development&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;transactionManager</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;JDBC&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;dataSource</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;POOLED&#34;</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driver&#34;</span> 	<span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+                <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=Asia/Shanghai&#34;</span><span style="color:#f92672">/&gt;</span>
+                <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+                <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;/dataSource&gt;</span>
+        <span style="color:#f92672">&lt;/environment&gt;</span>
+    <span style="color:#f92672">&lt;/environments&gt;</span>
+   
+<span style="color:#f92672">&lt;/configuration&gt;</span>
+</code></pre></div><p>`</p>
+</li>
+<li>
+<p>编写Mybatis工具类</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 通过sqlSessionFactory得到sqlSession
+</span><span style="color:#75715e"> * @author yxc
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MybatisUtil</span> <span style="color:#f92672">{</span>
+   
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> InputStream inputStream <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> SqlSessionFactory sqlSessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+   
+    <span style="color:#66d9ef">static</span><span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// 使用Mybatis的第一步，获取sqlSessionFactory对象
+</span><span style="color:#75715e"></span>            String resource <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mybatis-config.xml&#34;</span><span style="color:#f92672">;</span>
+            inputStream <span style="color:#f92672">=</span> Resources<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span>resource<span style="color:#f92672">);</span>
+            sqlSessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SqlSessionFactoryBuilder<span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span>inputStream<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+   <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 既然有了sqlSessionFactory对象，顾名思义，我们就可以从中获取到SqlSession的实例了
+</span><span style="color:#75715e">     * SqlSession包含了执行sql的所有语句
+</span><span style="color:#75715e">     * @return SqlSession
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SqlSession <span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> sqlSessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>`</p>
+</li>
+</ol>
+<h3 id="23编写代码">2.3、编写代码</h3>
+<ol>
+<li>
+<p>实体类</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.yxc.pojo<span style="color:#f92672">;</span>
+   
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * (User)实体类
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @author makejava
+</span><span style="color:#75715e"> * @since 2020-04-20 17:14:09
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+       
+    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+       
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+       
+    <span style="color:#66d9ef">private</span> String password<span style="color:#f92672">;</span>
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">,</span> String name<span style="color:#f92672">,</span> String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Integer id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> password<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPassword</span><span style="color:#f92672">(</span>String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;User{&#34;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;id=&#34;</span> <span style="color:#f92672">+</span> id <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;, name=&#39;&#34;</span> <span style="color:#f92672">+</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#34;, password=&#39;&#34;</span> <span style="color:#f92672">+</span> password <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+                <span style="color:#e6db74">&#39;}&#39;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>`</p>
+</li>
+<li>
+<p>Dao接口</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 获取用户列表
+</span><span style="color:#75715e">     * @return List
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUserList</span><span style="color:#f92672">();</span>
+   
+<span style="color:#f92672">}</span>
+</code></pre></div><p>`</p>
+</li>
+<li>
+<p>用xml配置来映射sql语句</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE mapper
+</span><span style="color:#75715e">        PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34;
+</span><span style="color:#75715e">        &#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt;</span>
+<span style="color:#75715e">&lt;!--namespace命名空间：用来绑定一个Dao/Mapper接口--&gt;</span>
+<span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">namespace=</span><span style="color:#e6db74">&#34;com.yxc.dao.UserDao&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--id:绑定接口里的方法--&gt;</span>
+    <span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserList&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+        select * from user;
+    <span style="color:#f92672">&lt;/select&gt;</span>
+<span style="color:#f92672">&lt;/mapper&gt;</span>
+</code></pre></div><p>`</p>
+</li>
+</ol>
+<h3 id="24测试">2.4、测试</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 1.获取sqlSession对象
+</span><span style="color:#75715e"></span>        SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// 执行sql  方式一：getMapper
+</span><span style="color:#75715e"></span>        UserDao mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserDao<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> userList <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserList</span><span style="color:#f92672">();</span>
+
+        <span style="color:#75715e">// 执行sql  方式二：不推荐使用
+</span><span style="color:#75715e">// List&lt;User&gt; userList = sqlSession.selectList(&#34;com.yxc.dao.UserDao.getUserList&#34;);
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>User user<span style="color:#f92672">:</span> userList <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><blockquote>
+<p>异常</p>
+</blockquote>
+<ul>
+<li>
+<p>org.apache.ibatis.binding.BindingException: Type interface com.yxc.dao.UserMapper is not known to the MapperRegistry</p>
+<p>该错误是没有在mybatis-config.xml中配置作用域</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">resource=</span><span style="color:#e6db74">&#34;com/yxc/dao/UserMapper.xml&#34;</span><span style="color:#f92672">&gt;&lt;/mapper&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+<li>
+<p>java.lang.ExceptionInInitializerError</p>
+<p>该错误是因为在java文件夹下的资源文件被maven过滤了，需要在pom.xml中配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;resources&gt;</span>
+        <span style="color:#f92672">&lt;resource&gt;</span>
+            <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
+            <span style="color:#f92672">&lt;includes&gt;</span>
+                <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
+                <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+            <span style="color:#f92672">&lt;/includes&gt;</span>
+            <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
+        <span style="color:#f92672">&lt;/resource&gt;</span>
+  
+        <span style="color:#f92672">&lt;resource&gt;</span>
+            <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
+            <span style="color:#f92672">&lt;includes&gt;</span>
+                <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
+                <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+            <span style="color:#f92672">&lt;/includes&gt;</span>
+            <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
+        <span style="color:#f92672">&lt;/resource&gt;</span>
+    <span style="color:#f92672">&lt;/resources&gt;</span>
+<span style="color:#f92672">&lt;/build&gt;</span>
+</code></pre></div><pre><code>
+
+
+</code></pre></li>
+</ul>
+<h2 id="3作用域scope和生命周期">3、作用域（Scope）和生命周期</h2>
+<h3 id="31sqlsessionfactorybuilder">3.1、SqlSessionFactoryBuilder</h3>
+<pre><code>+ 这个类可以被实例化、使用和丢弃，一旦创建了 SqlSessionFactory，就不再需要它了
+</code></pre>
+<h3 id="32sqlsessionfactory">3.2、SqlSessionFactory</h3>
+<pre><code>+  SqlSessionFactory 一旦被创建就应该在应用的运行期间一直存在 
++   使用单例模式或者静态单例模式 
+</code></pre>
+<h3 id="33sqlsession">3.3、SqlSession</h3>
+<ul>
+<li>
+<p>每个线程都应该有它自己的 SqlSession 实例。SqlSession的实例不是线程安全的，因此是不能被共享的</p>
+</li>
+<li>
+<p>每次收到 HTTP 请求，就可以打开一个 SqlSession，返回一个响应后，就关闭它 ,  这个关闭操作很重要，为了确保每次都能执行关闭操作，你应该把这个关闭操作放到 finally 块中</p>
+</li>
+<li>
+<p>下面的示例就是一个确保 SqlSession 关闭的标准模式：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>SqlSession session <span style="color:#f92672">=</span> sqlSessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// 你的应用逻辑代码
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>`</p>
+</li>
+</ul>
+<p>​</p>
+<h2 id="4crud">4、CRUD</h2>
+<h3 id="41usermapperxml参数">4.1、UserMapper.xml参数</h3>
+<ul>
+<li>namespace：绑定接口</li>
+<li>id：绑定接口里的方法</li>
+<li>resultType：返回值类型（如果返回值类型是实体类，则需要写出全路径）</li>
+<li>parameterType：参数类型（如果参数类型是实体类，则需要写出全路径）</li>
+</ul>
+<h3 id="42insert">4.2、insert</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;insert</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;insertUser&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+	insert into mybatis.user values (#{id},#{name},#{password})
+<span style="color:#f92672">&lt;/insert&gt;</span>
+</code></pre></div><h3 id="43delete">4.3、delete</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;deleteUser&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;int&#34;</span><span style="color:#f92672">&gt;</span>
+    delete from mybatis.user where id = #{id}
+<span style="color:#f92672">&lt;/delete&gt;</span>
+</code></pre></div><h3 id="44update">4.4、update</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;update</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;updateUser&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+    update mybatis.user set name = #{name},password = #{password} where id = #{id}
+<span style="color:#f92672">&lt;/update&gt;</span>
+</code></pre></div><h3 id="45select">4.5、select</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserList&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.user;
+<span style="color:#f92672">&lt;/select&gt;</span>
+
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserById&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;int&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.user where id = #{id}
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><ul>
+<li><strong>注：增删改操作需要提交事务</strong></li>
+</ul>
+<h3 id="46模糊查询">4.6、模糊查询</h3>
+<ul>
+<li>
+<p>方法一：在执行java代码时，传入通配符% %</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserLike&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from user where name like #{value}
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><pre><code>
+  ```java
+  List&lt;User&gt; userList = mapper.getUserLike(&quot;%张%&quot;);
+</code></pre><pre><code>
+</code></pre></li>
+<li>
+<p>方法二：在sql拼接时使用通配符</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserLike&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from user where name like &#34;%&#34;#{value}&#34;%&#34;
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><pre><code>
+  ```java
+  List&lt;User&gt; userList = mapper.getUserLike(&quot;张&quot;);
+</code></pre><pre><code>
+
+
+</code></pre></li>
+</ul>
+<h3 id="47万能的map">4.7、万能的map</h3>
+<ul>
+<li>如果我们的实体类或者数据库的字段过多，我们应该考虑使用map</li>
+</ul>
+<h4 id="471编写接口中的方法">4.7.1、编写接口中的方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 使用map增加用户
+</span><span style="color:#75715e"> * @param map
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insertUser2</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> map<span style="color:#f92672">);</span>
+
+</code></pre></div><h4 id="472编写xml文件注册方法">4.7.2、编写xml文件,注册方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--此处的id，name，password与map中的键一一对应--&gt;</span>
+<span style="color:#f92672">&lt;insert</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;insertUser2&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span><span style="color:#f92672">&gt;</span>
+    insert into mybatis.user values (#{id},#{name},#{password})
+<span style="color:#f92672">&lt;/insert&gt;</span>
+</code></pre></div><h4 id="473编写测试类">4.7.3、编写测试类</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test6</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+
+    UserMapper mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;();</span>
+    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span>4<span style="color:#f92672">);</span>
+    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;小明&#34;</span><span style="color:#f92672">);</span>
+    map<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;123456&#34;</span><span style="color:#f92672">);</span>
+
+    mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">insertUser2</span><span style="color:#f92672">(</span>map<span style="color:#f92672">);</span>
+
+    sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>
+    sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="5mybatis配置">5、Mybatis配置</h2>
+<h3 id="51核心配置文档结构">5.1、核心配置文档结构</h3>
+<ul>
+<li>
+<p>configuration（配置）</p>
+<ul>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#properties">properties（属性）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#settings">settings（设置）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeAliases">typeAliases（类型别名）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeHandlers">typeHandlers（类型处理器）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#objectFactory">objectFactory（对象工厂）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#plugins">plugins（插件）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#environments">environments（环境配置）</a></p>
+<ul>
+<li>environment（环境变量）</li>
+<li>transactionManager（事务管理器）</li>
+<li>dataSource（数据源）</li>
+</ul>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#databaseIdProvider">databaseIdProvider（数据库厂商标识）</a></p>
+</li>
+<li>
+<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html#mappers">mappers（映射器）</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="52环境配置">5.2、环境配置</h3>
+<ul>
+<li>
+<p>MyBatis 可以配置成适应多种环境, <strong>但每个 SqlSessionFactory实例只能选择一种环境。</strong></p>
+</li>
+<li>
+<p><strong>每个数据库对应一个 SqlSessionFactory 实例</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--在environments标签的default属性可已选择不同的环境--&gt;</span>
+<span style="color:#f92672">&lt;environments</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;development2&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;environment</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;development&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;transactionManager</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;JDBC&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;dataSource</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;POOLED&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=Asia/Shanghai&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/dataSource&gt;</span>
+    <span style="color:#f92672">&lt;/environment&gt;</span>
+
+    <span style="color:#f92672">&lt;environment</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;development2&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;transactionManager</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;JDBC&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;dataSource</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;POOLED&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/yxc?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=Asia/Shanghai&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/dataSource&gt;</span>
+    <span style="color:#f92672">&lt;/environment&gt;</span>
+<span style="color:#f92672">&lt;/environments&gt;</span>
+</code></pre></div><ul>
+<li>transactionManager事务管理器有两种：JDBC和<del>MANAGED</del></li>
+<li>dataSource数据源默认时开启数据库连接池的，即POOLED</li>
+</ul>
+<h3 id="53属性properties">5.3、属性(properties)</h3>
+<ul>
+<li>
+<p>这些属性可以在外部进行配置，并可以进行动态替换。你既可以在典型的 Java 属性文件中配置这些属性，也可以在 properties 元素的子元素中设置</p>
+<p>就是说，我们可以通过properties来引入外部的配置文件</p>
+</li>
+</ul>
+<h4 id="531引入外部配置文件">5.3.1、引入外部配置文件</h4>
+<ul>
+<li>编写配置文件 db.properties</li>
+</ul>
+<pre><code class="language-properties" data-lang="properties">driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai
+username=root
+password=root
+</code></pre><ul>
+<li>在mybatis-config.xml中引入</li>
+</ul>
+<p><img src="Mybatis.assets/1587630815009.png" alt="1587630815009"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--properties标签需要排在第一位--&gt;</span>
+<span style="color:#f92672">&lt;properties</span> <span style="color:#a6e22e">resource=</span><span style="color:#e6db74">&#34;db.properties&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><h4 id="532在properties-元素的子元素中设置">5.3.2、在properties 元素的子元素中设置</h4>
+<ul>
+<li>
+<p>在mybatis-config.xml中设置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;properties</span> <span style="color:#a6e22e">resource=</span><span style="color:#e6db74">&#34;db.properties&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;serverTimezone=Asia/Shanghai&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/properties&gt;</span>
+</code></pre></div><pre><code>
+
+
+</code></pre></li>
+</ul>
+<h4 id="533注意">5.3.3、注意</h4>
+<p>如果一个属性在不只一个地方进行了配置，那么，MyBatis 将按照下面的顺序来加载：</p>
+<ul>
+<li>首先读取在 properties 元素体内指定的属性。</li>
+<li>然后根据 properties 元素中的 resource 属性读取类路径下属性文件，或根据url 属性指定的路径读取属性文件，并覆盖之前读取过的同名属性。</li>
+<li>最后读取作为方法参数传递的属性，并覆盖之前读取过的同名属性。</li>
+</ul>
+<p>因此，通过方法参数传递的属性具有最高优先级，resource/url 属性中指定的配置文件次之，最低优先级的则是 properties 元素中指定的属性。</p>
+<h3 id="54别名">5.4、别名</h3>
+<ul>
+<li>类型别名可为 Java 类型设置一个缩写名字。它仅用于 XML 配置，意在降低冗余的全限定类名书写</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;typeAliases&gt;</span>
+    <span style="color:#f92672">&lt;typeAlias</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;com.yxc.pojo.User&#34;</span> <span style="color:#a6e22e">alias=</span><span style="color:#e6db74">&#34;User&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/typeAliases&gt;</span>
+</code></pre></div><p>当这样配置时，<strong>User</strong>就可以用在任何需要用到<strong>com.yxc.pojo.User</strong>的地方</p>
+<ul>
+<li>也可以指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean，比如：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;typeAliases&gt;</span>
+  <span style="color:#f92672">&lt;package</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;com.yxc.pojo&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/typeAliases&gt;</span>
+</code></pre></div><p>这样配置时，Mybatis会在<strong>com.yxc.pojo</strong>下寻找实体类的包，并默认会将首字母小写的类名作为别名，即user</p>
+<blockquote>
+<p>在实体类比较少的情况下，建议用第一种</p>
+<p>在实体类比较多的情况下，建议用第二种</p>
+<p>第一种可以自己指定别名</p>
+<p>第二种在没有注解的情况下，不可以自己指定别名</p>
+</blockquote>
+<p>注解：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Alias</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;User&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="55设置">5.5、设置</h3>
+<table>
+<thead>
+<tr>
+<th align="left">设置名</th>
+<th align="left">描述</th>
+<th align="center">有效值</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">cacheEnabled</td>
+<td align="left">全局性地开启或关闭所有映射器配置文件中已配置的任何缓存。</td>
+<td align="center">true|false</td>
+<td align="center">true</td>
+</tr>
+<tr>
+<td align="left">lazyLoadingEnabled</td>
+<td align="left">延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。</td>
+<td align="center">true|false</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="left">logImpl</td>
+<td align="left">指定 MyBatis 所用日志的具体实现，未指定时将自动查找。</td>
+<td align="center">SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING</td>
+<td align="center">无</td>
+</tr>
+</tbody>
+</table>
+<h3 id="56映射器mappers">5.6、映射器(mappers)</h3>
+<p>绑定注册我们的mapper文件</p>
+<ul>
+<li>
+<p>方式一：使用相对于类路径的资源引用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">resource=</span><span style="color:#e6db74">&#34;com/yxc/dao/UserMapper.xml&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+<li>
+<p>方式二：使用映射器接口实现类的完全限定类名</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.yxc.dao.UserMapper&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+<li>
+<p>方式三：将包内的映射器接口实现全部注册为映射器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;package</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;com.yxc.dao&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><pre><code>
+	
+
+</code></pre></li>
+</ul>
+<p>使用方式二和方式三需要注意的点：</p>
+<ul>
+<li>需要xml文件与mapper文件在同一包下，否则会找不到</li>
+<li>需要xml文件与mapper文件同名</li>
+</ul>
+<h2 id="6解决属性名和字段名不一致的问题">6、解决属性名和字段名不一致的问题</h2>
+<p>数据库：<img src="Mybatis.assets/1587476738800.png" alt="1587476738800"></p>
+<p>实体类：<img src="Mybatis.assets/1587476796307.png" alt="1587476796307"></p>
+<p>测试会出现问题</p>
+<p><img src="Mybatis.assets/1587478146325.png" alt="1587478146325"></p>
+<h3 id="解决办法">解决办法：</h3>
+<ul>
+<li>
+<p>起别名</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserById&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;User&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;int&#34;</span><span style="color:#f92672">&gt;</span>
+    select id,name,password as pwd from mybatis.user where id = #{id}
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+<li>
+<p>使用resultMap结果集映射</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--id可自己起名,type代表映射的类--&gt;</span>
+<span style="color:#f92672">&lt;resultMap</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;UserMap&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;User&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--column对应数据库中的字段,property代表实体类中的属性名--&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;pwd&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/resultMap&gt;</span>
+  
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getUserById&#34;</span> <span style="color:#a6e22e">resultMap=</span><span style="color:#e6db74">&#34;UserMap&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;int&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.user where id = #{id}
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><pre><code>
+   `resultMap` 元素是 MyBatis 中最重要最强大的元素。 
+
+
+
+
+
+</code></pre></li>
+</ul>
+<h2 id="7日志">7、日志</h2>
+<h3 id="71日志工厂">7.1、日志工厂</h3>
+<p><img src="Mybatis.assets/1587485014041.png" alt="1587485014041"></p>
+<ul>
+<li>
+<p>LF4J</p>
+</li>
+<li>
+<p><strong>LOG4J</strong></p>
+</li>
+<li>
+<p>LOG4J2</p>
+</li>
+<li>
+<p>JDK_LOGGING</p>
+</li>
+<li>
+<p>COMMONS_LOGGING</p>
+</li>
+<li>
+<p><strong>STDOUT_LOGGING</strong></p>
+</li>
+<li>
+<p>NO_LOGGING</p>
+</li>
+</ul>
+<p>具体使用哪种日志，由设置决定</p>
+<h3 id="72stdout_logging-标准日志输出">7.2、STDOUT_LOGGING ：标准日志输出</h3>
+<p><img src="Mybatis.assets/1587485741033.png" alt="1587485741033"></p>
+<h3 id="73log4j">7.3、Log4j</h3>
+<ul>
+<li>Log4j是Apache的一个开源项目，通过使用Log4j，我们可以控制日志信息输送的目的地是控制台、文件、GUI组件</li>
+<li>我们可以控制每一条日志的输出格式</li>
+<li>我们可以定义每一条日志信息的级别</li>
+<li>我们通过一个配置文件来灵活地进行配置，而不需要修改应用的代码</li>
+</ul>
+<h4 id="731导包">7.3.1、导包</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/log4j/log4j --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>log4j<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>log4j<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.2.17<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><h4 id="732配置文件">7.3.2、配置文件</h4>
+<pre><code class="language-properties" data-lang="properties">#将等级为DEBUG的日志信息输出到console和file这两个目的地，console和file的定义在下面的代码
+log4j.rootLogger=DEBUG,console,file
+
+#控制台输出的相关设置
+log4j.appender.console = org.apache.log4j.ConsoleAppender
+log4j.appender.console.Target = System.out
+log4j.appender.console.Threshold=DEBUG
+log4j.appender.console.layout = org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=[%c]-%m%n
+
+#文件输出的相关设置
+log4j.appender.file = org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=./log/yxc.log
+log4j.appender.file.MaxFileSize=10mb
+log4j.appender.file.Threshold=DEBUG
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=[%p][%d{yy-MM-dd}][%c]%m%n
+
+#日志输出级别
+log4j.logger.org.mybatis=DEBUG
+log4j.logger.java.sql=DEBUG
+log4j.logger.java.sql.Statement=DEBUG
+log4j.logger.java.sql.ResultSet=DEBUG
+log4j.logger.java.sql.PreparedStatement=DEBUG
+</code></pre><h4 id="733运行">7.3.3、运行</h4>
+<p><img src="Mybatis.assets/1587487220961.png" alt="1587487220961"></p>
+<h4 id="734简单使用">7.3.4、简单使用</h4>
+<ul>
+<li>
+<p>导包</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.log4j.Logger<span style="color:#f92672">;</span>
+</code></pre></div></li>
+<li>
+<p>获取日志对象，参数位当前类的class对象</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>UserDaoTest<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+<li>
+<p>输出</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;info：进入Log4j日志&#34;</span><span style="color:#f92672">);</span>
+logger<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;debug：进入Log4j日志&#34;</span><span style="color:#f92672">);</span>
+logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;error：进入Log4j日志&#34;</span><span style="color:#f92672">);</span>
+</code></pre></div><pre><code>
+
+
+</code></pre></li>
+</ul>
+<h2 id="8分页">8、分页</h2>
+<ul>
+<li>
+<p>为什么要分页？</p>
+<p>因为一次只展示一页的数据，所以可以减少数据的处理量</p>
+</li>
+</ul>
+<h3 id="81使用limit分页">8.1、使用limit分页</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> mybatis.<span style="color:#66d9ef">user</span> <span style="color:#66d9ef">limit</span> startIndex,pageSize;
+<span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> mybatis.<span style="color:#66d9ef">user</span> <span style="color:#66d9ef">limit</span> <span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>;
+<span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> mybatis.<span style="color:#66d9ef">user</span> <span style="color:#66d9ef">limit</span> <span style="color:#ae81ff">3</span>; <span style="color:#75715e">#0,3
+</span></code></pre></div><h3 id="82使用rowbounds分页">8.2、使用RowBounds分页</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+
+RowBounds rowBounds <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RowBounds<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>2<span style="color:#f92672">);</span>
+
+List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> userList <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">selectList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.yxc.dao.UserMapper.getUserRowBound&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span>rowBounds<span style="color:#f92672">);</span>
+<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>User user <span style="color:#f92672">:</span> userList<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="83使用插件进行分页">8.3、使用插件进行分页</h3>
+<p><img src="Mybatis.assets/1587527717618.png" alt="1587527717618"></p>
+<h2 id="9使用注解开发">9、使用注解开发</h2>
+<h3 id="91面向接口编程">9.1、面向接口编程</h3>
+<ul>
+<li>大家之前都学过面向对象编程，也学习过接口，但在真正的开发中，很多时候我们会选择面向接口编程</li>
+<li>根本原因:<strong>解耦</strong>,可拓展,提高复用,分层开发中,上层不用管具体的实现,大家都遵守共同的标准,使得开发变得容易,规范性更好</li>
+<li>在一个面向对象的系统中，系统的各种功能是由许许多多的不同对象协作完成的。在这种情况下，各个对象内部是如何实现自己的，对系统设计人员来讲就不那么重要了;</li>
+<li>而各个对象之间的协作关系则成为系统设计的关键。小到不同类之间的通信，大到各模块之间的交互，在系统设计之初都是要着重考虑的，这也是系统设计的主要工作内容。面向接编程就是指按照这种思想来编程。</li>
+<li>关于接口的理解
+<ul>
+<li>接口从更深层次的理解，应是定义(规范,约束)与实现(名实分离的原则)的分离。</li>
+<li>接口的本身反映了系统设计人员对系统的抽象理解。</li>
+<li>接口应有两类:
+<ul>
+<li>第一类是对一个个体的抽象，它可对应为- -个抽象体(abstract class);</li>
+<li>第二类是对一个个体某一方面的抽象，即形成一个抽象面(interface) ;</li>
+<li>个体有可能有多个抽象面。抽象体与抽象面是有区别的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>三个面向区别</strong>
+<ul>
+<li>面向对象是指，我们考虑问题时，以对象为单位,考虑它的属性及方法.</li>
+<li>面向过程是指，我们考虑问题时，以-个具体的流程(事务过程)为单位,考虑它的实现.</li>
+<li>接口设计与非接口设计是针对复用技术而言的，与面向对象(过程)不是一个问题.更多的体现就是对系统整体的架构</li>
+</ul>
+</li>
+</ul>
+<h3 id="92使用注解开发">9.2、使用注解开发</h3>
+<h4 id="921使用注解开发需要在mybatis配置文件中注册接口">9.2.1、使用注解开发需要在mybatis配置文件中注册接口</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.yxc.dao.UserMapper&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><h4 id="922编写接口时写注解">9.2.2、编写接口时写注解</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from mybatis.user&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUserList</span><span style="color:#f92672">();</span>
+</code></pre></div><h4 id="923不需要写usermapperxml">9.2.3、不需要写UserMapper.xml</h4>
+<ul>
+<li>
+<p><strong>本质：反射机制</strong></p>
+</li>
+<li>
+<p><strong>底层：动态代理</strong></p>
+</li>
+</ul>
+<h3 id="93mybatis详细执行流程">9.3、Mybatis详细执行流程</h3>
+<p><img src="Mybatis.assets/SqlSessionFactoryBuilder.png" alt="SqlSessionFactoryBuilder"></p>
+<h3 id="94使用注解写crud">9.4、使用注解写CRUD</h3>
+<ul>
+<li>
+<p>如果想要自动提交事务，可以在MybatisUtil类中获取sqlSession对象的方法中的进行配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SqlSession <span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 如果不写参数，则不会自动提交；如果参数为true，则会自动提交事务
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> sqlSessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><pre><code>
+</code></pre></li>
+</ul>
+<h4 id="941insert">9.4.1、insert</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Insert</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into mybatis.user values (#{id},#{name},#{password})&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insertUser</span><span style="color:#f92672">(</span>User user<span style="color:#f92672">);</span>
+</code></pre></div><h4 id="942delete">9.4.2、delete</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Delete</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;delete from mybatis.user where id = #{id}&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteUserById</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> id<span style="color:#f92672">);</span>
+</code></pre></div><h4 id="943update">9.4.3、update</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Update</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;update mybatis.user set name=#{name},password=#{password} where id=#{id}&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updeteUser</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">int</span> id<span style="color:#f92672">,</span><span style="color:#a6e22e">@Param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">)</span> String name<span style="color:#f92672">,</span><span style="color:#a6e22e">@Param</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">)</span> String password<span style="color:#f92672">);</span>
+</code></pre></div><h4 id="944select">9.4.4、select</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from mybatis.user&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUserList</span><span style="color:#f92672">();</span>
+</code></pre></div><h4 id="945关于param注解">9.4.5、关于@Param()注解</h4>
+<ul>
+<li>使用基本数据类型和String类型的参数时，要加上@Param()注解</li>
+<li>使用引用类型的参数时，不需要加</li>
+<li>如果只有一个参数，可以不加@Param()注解</li>
+<li>我们在SQL中用#{}引用的就是@Param(&ldquo;id&rdquo;)里的属性名</li>
+</ul>
+<h2 id="10lombok">10、Lombok</h2>
+<ul>
+<li>用Lombok可以使用注解来减少冗余的代码</li>
+</ul>
+<h3 id="101获取lombok">10.1获取Lombok</h3>
+<ul>
+<li>
+<p><a href="https://plugins.jetbrains.com/plugin/6317-lombok">下载插件</a></p>
+</li>
+<li>
+<p>导入jar包</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/org.projectlombok/lombok --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.18.8<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><pre><code>
+	
+
+</code></pre></li>
+</ul>
+<h3 id="102可使用的注解">10.2、可使用的注解</h3>
+<pre><code>@Getter and @Setter
+@FieldNameConstants
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor, @RequiredArgsConstructor and @NoArgsConstructor
+@Log, @Log4j, @Log4j2, @Slf4j, @XSlf4j, @CommonsLog, @JBossLog, @Flogger, @CustomLog
+@Data
+@Builder
+@SuperBuilder
+@Singular
+@Delegate
+@Value
+@Accessors
+@Wither
+@With
+@SneakyThrows
+@val
+@var
+experimental @var@UtilityClass
+@UtilityClass
+</code></pre><ul>
+<li>常用
+<ul>
+<li>@Data ：  get/set，toString，hashCode，equals</li>
+<li>@AllArgsConstructor  :     有参构造</li>
+<li>@NoArgsConstructor  :      无参构造</li>
+</ul>
+</li>
+</ul>
+<h2 id="11多对一处理">11、多对一处理</h2>
+<h3 id="111搭建环境">11.1、搭建环境</h3>
+<h4 id="1111建表">11.1.1、建表</h4>
+<p>先建两个表，一个老师表，一个学生表，通过学生表的uid与老师表的id进行关联</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>teacher<span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>INNODB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8;
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">teacher</span>(<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;秦老师&#39;</span>);
+
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span> <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>),
+<span style="color:#66d9ef">KEY</span> <span style="color:#f92672">`</span>fktid<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>),
+<span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#f92672">`</span>fktid<span style="color:#f92672">`</span> <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#f92672">`</span>teacher<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>INNODB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8;
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;1&#39;</span>, <span style="color:#e6db74">&#39;小明&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;小红&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3&#39;</span>, <span style="color:#e6db74">&#39;小张&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;4&#39;</span>, <span style="color:#e6db74">&#39;小李&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tid<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;5&#39;</span>, <span style="color:#e6db74">&#39;小王&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+</code></pre></div><h4 id="1112实体类">11.1.2、实体类</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
+<span style="color:#a6e22e">@ToString</span>
+<span style="color:#a6e22e">@NoArgsConstructor</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> serialVersionUID <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>93109226910865710L<span style="color:#f92672">;</span>
+    
+    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span> 
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> Teacher teacher<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Data</span>
+<span style="color:#a6e22e">@ToString</span>
+<span style="color:#a6e22e">@NoArgsConstructor</span>
+<span style="color:#a6e22e">@AllArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Teacher</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> serialVersionUID <span style="color:#f92672">=</span> 433071664338760966L<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> Integer id<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="1113目录结构">11.1.3、目录结构</h4>
+<p><img src="Mybatis.assets/1587573012753.png" alt="1587573012753"></p>
+<p><img src="Mybatis.assets/1587573037759.png" alt="1587573037759"></p>
+<ul>
+<li>如果mapper文件过多，xml放在同一目录下会显得臃肿，故分开存放</li>
+<li>mapper文件和xml文件在源码文件夹(java)和资源文件夹(resources)的同等路径下，在编译时，会整合到同意文件夹，如图：</li>
+</ul>
+<p><img src="Mybatis.assets/1587573249811.png" alt="1587573249811"></p>
+<h4 id="1114在核心配置文件中注册mapper">11.1.4、在核心配置文件中注册mapper</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;mappers&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.yxc.dao.TeacherMapper&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;com.yxc.dao.StudentMapper&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/mappers&gt;</span>
+</code></pre></div><h4 id="1115测试">11.1.5、测试</h4>
+<h3 id="112按照查询嵌套处理">11.2、按照查询嵌套处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--
+</span><span style="color:#75715e">思路：
+</span><span style="color:#75715e">	1.查询所有的学生
+</span><span style="color:#75715e">	2.根据查询出来的学生的tid，查询相对应的老师
+</span><span style="color:#75715e">	类似：select id,name,tid 
+</span><span style="color:#75715e">		 from student 
+</span><span style="color:#75715e">		 where 
+</span><span style="color:#75715e">		 tid = (select id from teacher)
+</span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getStudent&#34;</span> <span style="color:#a6e22e">resultMap=</span><span style="color:#e6db74">&#34;StudentTeacher&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.student
+<span style="color:#f92672">&lt;/select&gt;</span>
+
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getTeacher&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;Teacher&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--此处的tid其实可以随便写，mybatis会进行推断，大多数情况能推断正确，不过还是不建议随便写--&gt;</span>
+    select id,name from mybatis.teacher where id = #{tid}
+<span style="color:#f92672">&lt;/select&gt;</span>
+
+<span style="color:#f92672">&lt;resultMap</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;StudentTeacher&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;Student&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--property代表属性名，column代表字段名，javaType代表属性的类型，select代表子查询的语句--&gt;</span>
+    <span style="color:#f92672">&lt;association</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;teacher&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;tid&#34;</span> <span style="color:#a6e22e">javaType=</span><span style="color:#e6db74">&#34;Teacher&#34;</span> <span style="color:#a6e22e">select=</span><span style="color:#e6db74">&#34;getTeacher&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/resultMap&gt;</span>
+</code></pre></div><h3 id="113按照结果嵌套处理">11.3、按照结果嵌套处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getStudent2&#34;</span> <span style="color:#a6e22e">resultMap=</span><span style="color:#e6db74">&#34;StudentTeacher2&#34;</span><span style="color:#f92672">&gt;</span>
+    select s.id sid,s.name sname,t.name tname
+    from mybatis.teacher t,mybatis.student s
+    where s.tid = t.id;
+<span style="color:#f92672">&lt;/select&gt;</span>
+
+<span style="color:#f92672">&lt;resultMap</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;StudentTeacher2&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;Student&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;sname&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;sid&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#75715e">&lt;!--嵌套--&gt;</span>
+    <span style="color:#f92672">&lt;association</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;teacher&#34;</span> <span style="color:#a6e22e">javaType=</span><span style="color:#e6db74">&#34;Teacher&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;tname&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/association&gt;</span>
+<span style="color:#f92672">&lt;/resultMap&gt;</span>
+</code></pre></div><ul>
+<li>回顾mysql中多对一的查询
+<ul>
+<li>联表查询</li>
+<li>子查询</li>
+</ul>
+</li>
+</ul>
+<h2 id="12一对多处理">12、一对多处理</h2>
+<h3 id="121按照结果嵌套处理">12.1、按照结果嵌套处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--按id查询老师及老师的所有学生--&gt;</span>
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;getTeacher1&#34;</span> <span style="color:#a6e22e">resultMap=</span><span style="color:#e6db74">&#34;TeacherStudent&#34;</span><span style="color:#f92672">&gt;</span>
+    select t.id tid,t.name tname,s.name sname from mybatis.teacher t,mybatis.student s where t.id = s.tid
+<span style="color:#f92672">&lt;/select&gt;</span>
+
+<span style="color:#f92672">&lt;resultMap</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;TeacherStudent&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;Teacher&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;tid&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;tname&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#75715e">&lt;!--
+</span><span style="color:#75715e">        复杂的属性，我们需要单独处理，对象:association,集合:collection
+</span><span style="color:#75715e">        javaType():指定属性的类型
+</span><span style="color:#75715e">        ofType():集合中的泛型信息
+</span><span style="color:#75715e">        --&gt;</span>
+    <span style="color:#f92672">&lt;collection</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;students&#34;</span> <span style="color:#a6e22e">ofType=</span><span style="color:#e6db74">&#34;Student&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">property=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">column=</span><span style="color:#e6db74">&#34;sname&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/collection&gt;</span>
+<span style="color:#f92672">&lt;/resultMap&gt;</span>
+</code></pre></div><h3 id="小结">小结：</h3>
+<ol>
+<li>关联    association   多对一</li>
+<li>集合    collection      一对多</li>
+<li>javaType和ofType
+<ol>
+<li>javaType 用来指定实体类中属性的类型</li>
+<li>ofType 用来指定映射到List或者集合中的pojo类型</li>
+</ol>
+</li>
+</ol>
+<p><strong>注意</strong>：</p>
+<ol>
+<li>保证SQL的可读性，尽量保证通俗易懂</li>
+<li>注意多对一和一对多中，属性名和字段的问题</li>
+<li>如果问题不好排查，建议使用日志</li>
+</ol>
+<h3 id="面试高频">面试高频：</h3>
+<ol>
+<li>Mysql引擎</li>
+<li>InnoDB底层原理</li>
+<li>索引</li>
+<li>索引优化</li>
+</ol>
+<h2 id="13动态sql">13、动态SQL</h2>
+<p><strong>==根据条件的不同，生成不同的sql语句==</strong></p>
+<p>主要使用以下四个标签</p>
+<ul>
+<li>if</li>
+<li>choose (when, otherwise)</li>
+<li>trim (where, set)</li>
+<li>foreach</li>
+</ul>
+<h3 id="131搭建环境">13.1、搭建环境</h3>
+<h4 id="1311准备数据库">13.1.1、准备数据库</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>blog<span style="color:#f92672">`</span>(
+<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;博客id&#39;</span>,
+<span style="color:#f92672">`</span>title<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;博客标题&#39;</span>,
+<span style="color:#f92672">`</span>author<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;博客作者&#39;</span>,
+<span style="color:#f92672">`</span>create_time<span style="color:#f92672">`</span> <span style="color:#66d9ef">DATETIME</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;创建时间&#39;</span>,
+<span style="color:#f92672">`</span>views<span style="color:#f92672">`</span> <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;浏览量&#39;</span>
+)<span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>INNODB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8
+</code></pre></div><h4 id="1312插入数据">13.1.2、插入数据</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+BlogMapper mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>BlogMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+Blog blog <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">(</span>IdUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span><span style="color:#e6db74">&#34;Mybatis如此简单&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;杨旭晨&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span>15615<span style="color:#f92672">);</span>
+Blog blog1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">(</span>IdUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span><span style="color:#e6db74">&#34;Spring如此简单&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;杨旭晨&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span>2142<span style="color:#f92672">);</span>
+Blog blog2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">(</span>IdUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span><span style="color:#e6db74">&#34;Spring MVC如此简单&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;杨旭晨&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span>5961<span style="color:#f92672">);</span>
+Blog blog3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">(</span>IdUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span><span style="color:#e6db74">&#34;Spring Boot如此简单&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;杨旭晨&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span>8713<span style="color:#f92672">);</span>
+Blog blog4 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Blog<span style="color:#f92672">(</span>IdUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span><span style="color:#e6db74">&#34;微服务如此简单&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;杨旭晨&#34;</span><span style="color:#f92672">,</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">(),</span>2596<span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">addBlog</span><span style="color:#f92672">(</span>blog<span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">addBlog</span><span style="color:#f92672">(</span>blog1<span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">addBlog</span><span style="color:#f92672">(</span>blog2<span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">addBlog</span><span style="color:#f92672">(</span>blog3<span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">addBlog</span><span style="color:#f92672">(</span>blog4<span style="color:#f92672">);</span>
+
+sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="132if">13.2、if</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;queryBlogIf&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;Blog&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#75715e">&lt;!--where 1=1是为了解决如果当下列所有条件都不成立，该sql语句仍能正常运行，但这是不正规的写法，后面会有&lt;where&gt;标签来解决这件事--&gt;</span>
+    select * from mybatis.blog where 1 = 1
+    <span style="color:#75715e">&lt;!--如果传进来的有title，就将该语句加在查询语句后面--&gt;</span>
+    <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;title != null&#34;</span><span style="color:#f92672">&gt;</span>
+        and title = #{title}
+    <span style="color:#f92672">&lt;/if&gt;</span>
+    <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;author != null&#34;</span><span style="color:#f92672">&gt;</span>
+        and author = #{author}
+    <span style="color:#f92672">&lt;/if&gt;</span>
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><h3 id="133choose-when-otherwise">13.3、choose (when, otherwise)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;queryBlogChoose&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;Blog&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.blog
+    <span style="color:#f92672">&lt;where&gt;</span>
+        <span style="color:#75715e">&lt;!--与if类似，只是这choose与Java的switch-case一样，从上向下执行，只会选择符合条件的第一个--&gt;</span>
+        <span style="color:#f92672">&lt;choose&gt;</span>
+            <span style="color:#f92672">&lt;when</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;title != null&#34;</span><span style="color:#f92672">&gt;</span>
+                and title = #{title}
+            <span style="color:#f92672">&lt;/when&gt;</span>
+            <span style="color:#f92672">&lt;when</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;author != null&#34;</span><span style="color:#f92672">&gt;</span>
+                and author = #{title}
+            <span style="color:#f92672">&lt;/when&gt;</span>
+            <span style="color:#75715e">&lt;!--以上都不满足，则必须传入otherwise里的值--&gt;</span>
+            <span style="color:#f92672">&lt;otherwise&gt;</span>
+                and views = #{title}
+            <span style="color:#f92672">&lt;/otherwise&gt;</span>
+        <span style="color:#f92672">&lt;/choose&gt;</span>
+    <span style="color:#f92672">&lt;/where&gt;</span>
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><h3 id="134trim-where-set">13.4、trim (where, set)</h3>
+<ul>
+<li><em>where</em> 元素只会在子元素返回任何内容的情况下才插入 “WHERE” 子句。而且，若子句的开头为 “AND” 或 “OR”，<em>where</em> 元素也会将它们去除。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;queryBlogIf&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;Blog&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.blog
+    <span style="color:#f92672">&lt;where&gt;</span>
+        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;title != null&#34;</span><span style="color:#f92672">&gt;</span>
+            and title = #{title}
+        <span style="color:#f92672">&lt;/if&gt;</span>
+        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;author != null&#34;</span><span style="color:#f92672">&gt;</span>
+            and author = #{author}
+        <span style="color:#f92672">&lt;/if&gt;</span>
+    <span style="color:#f92672">&lt;/where&gt;</span>
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><ul>
+<li>这个例子中，<em>set</em> 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;update</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;updateBlog&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span><span style="color:#f92672">&gt;</span>
+    update mybatis.blog
+    <span style="color:#f92672">&lt;set&gt;</span>
+        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;title != null&#34;</span><span style="color:#f92672">&gt;</span>
+            title = #{title},
+        <span style="color:#f92672">&lt;/if&gt;</span>
+        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;author != null&#34;</span><span style="color:#f92672">&gt;</span>
+            author = #{author}
+        <span style="color:#f92672">&lt;/if&gt;</span>
+        where id  = #{id}
+    <span style="color:#f92672">&lt;/set&gt;</span>
+<span style="color:#f92672">&lt;/update&gt;</span>
+</code></pre></div><p>==<strong>所谓动态SQL，本质上还是SQL语句，只是在SQL层面执行一些逻辑代码</strong>==</p>
+<h3 id="135foreach">13.5、foreach</h3>
+<ul>
+<li>为了练习，先将id改成1，2，3，4，5</li>
+</ul>
+<p><img src="Mybatis.assets/1587698905031.png" alt="1587698905031"></p>
+<h4 id="1351查询id为135的博客">13.5.1、查询id为1，3，5的博客</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-XML" data-lang="XML"><span style="color:#75715e">&lt;!-- select * from mybatis.blog where (id=1 or id=3 or id=5)
+</span><span style="color:#75715e">     我们传了一个万能的map，我们可以在集合里存一个集合
+</span><span style="color:#75715e">--&gt;</span>
+<span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;queryBlogForeach&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;Blog&#34;</span><span style="color:#f92672">&gt;</span>
+    select * from mybatis.blog
+    <span style="color:#f92672">&lt;where&gt;</span>
+        <span style="color:#f92672">&lt;foreach</span> <span style="color:#a6e22e">collection=</span><span style="color:#e6db74">&#34;ids&#34;</span> <span style="color:#a6e22e">item=</span><span style="color:#e6db74">&#34;id&#34;</span>
+                 <span style="color:#a6e22e">open=</span><span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#a6e22e">separator=</span><span style="color:#e6db74">&#34;or&#34;</span> <span style="color:#a6e22e">close=</span><span style="color:#e6db74">&#34;)&#34;</span><span style="color:#f92672">&gt;</span>
+            id = #{id}
+        <span style="color:#f92672">&lt;/foreach&gt;</span>
+    <span style="color:#f92672">&lt;/where&gt;</span>
+<span style="color:#f92672">&lt;/select&gt;</span>
+</code></pre></div><h4 id="1352编写测试类">13.5.2、编写测试类</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+BlogMapper mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>BlogMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ids <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+
+ids<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
+ids<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;3&#34;</span><span style="color:#f92672">);</span>
+ids<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">);</span>
+
+List<span style="color:#f92672">&lt;</span>Blog<span style="color:#f92672">&gt;</span> blogs <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryBlogForeach</span><span style="color:#f92672">(</span>map<span style="color:#f92672">);</span>
+
+<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Blog blog <span style="color:#f92672">:</span> blogs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>blog<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="136sql片段">13.6、SQL片段</h3>
+<p>我们可以将动态SQL的代码片段提取出来，方便复用</p>
+<h4 id="1361抽取公共部分">13.6.1、抽取公共部分</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;sql</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;if-title-author&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;title != null&#34;</span><span style="color:#f92672">&gt;</span>
+        title = #{title},
+    <span style="color:#f92672">&lt;/if&gt;</span>
+    <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;author != null&#34;</span><span style="color:#f92672">&gt;</span>
+        author = #{author}
+    <span style="color:#f92672">&lt;/if&gt;</span>
+<span style="color:#f92672">&lt;/sql&gt;</span>
+</code></pre></div><p>13.6.2、在需要的地方使用include标签引入</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;update</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;updateBlog&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;map&#34;</span><span style="color:#f92672">&gt;</span>
+    update mybatis.blog
+    <span style="color:#f92672">&lt;set&gt;</span>
+        <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;if-title-author&#34;</span><span style="color:#f92672">/&gt;</span>
+        where id  = #{id}
+    <span style="color:#f92672">&lt;/set&gt;</span>
+<span style="color:#f92672">&lt;/update&gt;</span>
+</code></pre></div><ul>
+<li>注意：
+<ul>
+<li>最好基于单表来定义SQL片段</li>
+<li>最好不要加上where标签</li>
+</ul>
+</li>
+</ul>
+<p>==<strong>动态SQL就是在拼接SQL语句，只要保证SQL的正确性，按照SQL的格式，去排列组合就可以了</strong>==</p>
+<ul>
+<li>
+<p>建议：</p>
+<p>先在Mysql写出完整正确的SQL语句，再在Mybatis里修改为动态SQL实现通用即可！</p>
+</li>
+</ul>
+<h2 id="14缓存">14、缓存</h2>
+<h3 id="141简介">14.1、简介</h3>
+<ol>
+<li>什么是缓存[ Cache ]?</li>
+</ol>
+<ul>
+<li>存在内存中的临时数据。</li>
+<li>将用户经常查询的数据放在缓存(内存)中，用户去查询数据就不用从磁盘上(关系型数据库数据文件)查
+询,从缓存中查询，从而提高查询效率，解决了高并发系统的性能问题。</li>
+</ul>
+<ol start="2">
+<li>为什么使用缓存?</li>
+</ol>
+<ul>
+<li>减少和数据库的交互次数，减少系统开销，提高系统效率。</li>
+</ul>
+<ol start="3">
+<li>什么样的数据能使用缓存?</li>
+</ol>
+<ul>
+<li>经常查询并且不经常改变的数据。</li>
+</ul>
+<h3 id="142mybatis缓存">14.2、Mybatis缓存</h3>
+<ul>
+<li>MyBatis包含一个非常强大的查询缓存特性，它可以非常方便地定制和配置缓存。缓存可以极大的提升查询效率。</li>
+<li>MyBatis系统中默认定义了两级缓存: 一级缓存和二级缓存
+<ul>
+<li>默认情况下，只有一级缓存开启。 (SqISession级别的缓存， 也称为本地缓存)</li>
+<li>二级缓存需要手动开启和配置,他是基于namespace级别的缓存。</li>
+<li>为了提高扩展性, MyBatis定义了缓存接口Cache。我们可以通过实现Cache接口来自定义二级缓存</li>
+</ul>
+</li>
+</ul>
+<h3 id="143一级缓存">14.3、一级缓存</h3>
+<ul>
+<li>一级缓存也叫本地缓存，作用域：sqlSession，就是一次打开关闭sqlSession内
+<ul>
+<li>与数据库同一次会话查询到的数据会放到本地缓存里</li>
+<li>在sqlSession还没关闭时，如果需要同样的数据，则直接会从缓存里拿，没必要再去查一次数据库</li>
+</ul>
+</li>
+</ul>
+<h4 id="1431测试流程">14.3.1、测试流程</h4>
+<ul>
+<li>测试前先开启日志</li>
+<li>在一次sqlSession中查询相同的结果两次</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+UserMapper mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+<span style="color:#75715e">// 查询第一次
+</span><span style="color:#75715e"></span>User user <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;=============&#34;</span><span style="color:#f92672">);</span>
+<span style="color:#75715e">// 查询第二次
+</span><span style="color:#75715e"></span>User user1 <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">);</span>
+	
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user <span style="color:#f92672">==</span> user1<span style="color:#f92672">);</span>
+
+sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><ul>
+<li>结果</li>
+</ul>
+<p><img src="Mybatis.assets/1587712537680.png" alt="1587712537680"></p>
+<h4 id="1432缓存失效的情况">14.3.2、缓存失效的情况</h4>
+<ol>
+<li>两次查询的结果不同</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+UserMapper mapper <span style="color:#f92672">=</span> sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+<span style="color:#75715e">// 查询1号用户
+</span><span style="color:#75715e"></span>User user <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;=============&#34;</span><span style="color:#f92672">);</span>
+<span style="color:#75715e">// 查询2号用户
+</span><span style="color:#75715e"></span>User user1 <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>2<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">);</span>
+
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user <span style="color:#f92672">==</span> user1<span style="color:#f92672">);</span>
+
+sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><p><img src="Mybatis.assets/1587713366397.png" alt="1587713366397"></p>
+<ol start="2">
+<li>在两次查询之间有 insert、update 和 delete 语句则会刷新缓存</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SqlSession sqlSession <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+UserMapper mapper <span style="color:#f92672">=</span> hayoonghusqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+User user <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+<span style="color:#75715e">// 查询第一次1号用户
+</span><span style="color:#75715e"></span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;==================&#34;</span><span style="color:#f92672">);</span>
+
+<span style="color:#75715e">// 修改2号用户
+</span><span style="color:#75715e"></span>User user2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span>2<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xiaoming&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;12345678&#34;</span><span style="color:#f92672">);</span>
+mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">updateUser</span><span style="color:#f92672">(</span>user2<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;==================&#34;</span><span style="color:#f92672">);</span>
+
+<span style="color:#75715e">// 查询第二次1号用户
+</span><span style="color:#75715e"></span>User user1 <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1<span style="color:#f92672">);</span>
+
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user <span style="color:#f92672">==</span> user1<span style="color:#f92672">);</span>
+
+sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</code></pre></div><p><img src="Mybatis.assets/1587713911411.png" alt="1587713911411"></p>
+<ol start="3">
+<li>
+<p>用不同的mapper.xml查询（连namespace都不一样）</p>
+</li>
+<li>
+<p>手动清理缓存</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">clearCache</span><span style="color:#f92672">();</span>
+</code></pre></div><ul>
+<li>小结：
+<ul>
+<li>一级缓存是默认开启的，只在一次sqlSession中有效，也就是拿到连接到关闭这个区间段</li>
+<li>一级缓存就是一个Map集合，用户第一次查询的时候，把查询出的结果放进Map里，下次直接从Map去取</li>
+</ul>
+</li>
+</ul>
+<h3 id="144二级缓存">14.4、二级缓存</h3>
+<ul>
+<li>二级缓存也叫全局缓存，一级缓存作用域太低了，所以诞生了二级缓存</li>
+<li>基于namespace级别的缓存，一个名称空间，对应一个二级缓存;</li>
+<li>工作机制
+<ul>
+<li>一个会话查询一条数据，这个数据就会被放在当前会话的一级缓存中;</li>
+<li>如果当前会话关闭了，这个会话对应的一级缓存就没了;但是我们想要的是，会话关闭了，一级缓存中的数据被保存到二级缓存中;</li>
+<li>新的会话查询信息，就可以从二级缓存中获取内容;</li>
+<li>不同的mapper查出的数据会放在自己对应的缓存(map)中;</li>
+</ul>
+</li>
+</ul>
+<h4 id="1441开启二级缓存">14.4.1、开启二级缓存</h4>
+<ul>
+<li>在mybatis-config.xml文件的 &lt;settings&gt; 标签中</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;setting</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cacheEnabled&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><ul>
+<li>在要使用二级缓存的mapper.xml中开启</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;cache</span>
+  <span style="color:#a6e22e">eviction=</span><span style="color:#e6db74">&#34;FIFO&#34;</span>
+  <span style="color:#a6e22e">flushInterval=</span><span style="color:#e6db74">&#34;60000&#34;</span>
+  <span style="color:#a6e22e">size=</span><span style="color:#e6db74">&#34;512&#34;</span>
+  <span style="color:#a6e22e">readOnly=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>这样就建立了一个FIFO缓存，每隔60秒刷新，最多可以存储结果对象或列表的 512个引用，而且返回的对象被认为是只读的，因此对它们进行修改可能会在不同线程中的调用者产生冲突。</p>
+<ul>
+<li>
+<p>可用的清除策略有：</p>
+<ul>
+<li><code>LRU</code> – 最近最少使用：移除最长时间不被使用的对象。</li>
+<li><code>FIFO</code> – 先进先出：按对象进入缓存的顺序来移除它们。</li>
+<li><code>SOFT</code> – 软引用：基于垃圾回收器状态和软引用规则移除对象。</li>
+<li><code>WEAK</code> – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。</li>
+</ul>
+</li>
+<li>
+<p>默认的清除策略是 LRU。</p>
+</li>
+<li>
+<p>flushInterval（刷新间隔）属性可以被设置为任意的正整数，设置的值应该是一个以毫秒为单位的合理时间量。 默认情况是不设置，也就是没有刷新间隔，缓存仅仅会在调用语句时刷新。</p>
+</li>
+<li>
+<p>size（引用数目）属性可以被设置为任意正整数，要注意欲缓存对象的大小和运行环境中可用的内存资源。默认值是 1024。</p>
+</li>
+<li>
+<p>readOnly（只读）属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。 因此这些对象不能被修改。这就提供了可观的性能提升。而可读写的缓存会（通过序列化）返回缓存对象的拷贝。速度上会慢一些，但是更安全，因此默认值是 false。</p>
+</li>
+</ul>
+<h4 id="1442测试">14.4.2、测试</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 第一次获取sqlSession查询并关闭
+</span><span style="color:#75715e"></span>SqlSession sqlSession1 <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+UserMapper mapper1 <span style="color:#f92672">=</span> sqlSession1<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+User user1 <span style="color:#f92672">=</span> mapper1<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+sqlSession1<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+
+<span style="color:#75715e">// 第二次获取sqlSession查询并关闭
+</span><span style="color:#75715e"></span>SqlSession sqlSession2 <span style="color:#f92672">=</span> MybatisUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getSqlSession</span><span style="color:#f92672">();</span>
+UserMapper mapper2 <span style="color:#f92672">=</span> sqlSession2<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+User user2 <span style="color:#f92672">=</span> mapper2<span style="color:#f92672">.</span><span style="color:#a6e22e">queryUserById</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+sqlSession2<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>user1 <span style="color:#f92672">==</span> user2<span style="color:#f92672">);</span>
+</code></pre></div><p><img src="Mybatis.assets/1587716649969.png" alt="1587716649969"></p>
+<ul>
+<li>小结：
+<ul>
+<li>只要开启了二级缓存，在同一个Mapper下都有效</li>
+<li>所有数据都会先存放到一级缓存中</li>
+<li>只有当会话提交，或者关闭时，才会提交到二级缓存中去</li>
+</ul>
+</li>
+</ul>
+<h3 id="145mybatis缓存策略">14.5、Mybatis缓存策略</h3>
+<ul>
+<li>
+<p>写入策略：</p>
+<ol>
+<li>
+<p>现存入一级缓存，</p>
+</li>
+<li>
+<p>会话提交或关闭时，一级缓存将内容提交到二级缓存</p>
+</li>
+</ol>
+</li>
+<li>
+<p>读取策略：</p>
+<ol>
+<li>先看二级缓存中有没有</li>
+<li>再看一级缓存中有没有</li>
+<li>再查询数据库</li>
+</ol>
+</li>
+</ul>
+<h3 id="146自定义缓存-ehcache">14.6、自定义缓存 ehcache</h3>
+<ul>
+<li>EhCache 是一个纯Java的进程内缓存框架，具有快速、精干等特点</li>
+</ul>
+<h4 id="1461导包">14.6.1、导包</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/org.mybatis.caches/mybatis-ehcache --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.mybatis.caches<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mybatis-ehcache<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.1.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><h4 id="1462配置文件">14.6.2、配置文件</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;ehcache</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+<span style="color:#a6e22e">xsi:noNamespaceSchemaLocation=</span><span style="color:#e6db74">&#34;http://ehcache.org/ehcache.xsd&#34;</span>
+<span style="color:#a6e22e">updateCheck=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">&gt;</span>
+
+<span style="color:#f92672">&lt;diskStore</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;./tmpdir/Tmp_EhCache&#34;</span><span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;defaultCache</span>
+<span style="color:#a6e22e">eternal=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">maxElementsInMemory=</span><span style="color:#e6db74">&#34;10000&#34;</span>
+<span style="color:#a6e22e">overflowToDisk=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">diskPersistent=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">timeToIdleSeconds=</span><span style="color:#e6db74">&#34;1800&#34;</span>
+<span style="color:#a6e22e">timeToLiveSeconds=</span><span style="color:#e6db74">&#34;259200&#34;</span>
+<span style="color:#a6e22e">memoryStoreEvictionPolicy=</span><span style="color:#e6db74">&#34;LRU&#34;</span><span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;cache</span>
+<span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cloud_user&#34;</span>
+<span style="color:#a6e22e">eternal=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">maxElementsInMemory=</span><span style="color:#e6db74">&#34;5000&#34;</span>
+<span style="color:#a6e22e">overflowToDisk=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">diskPersistent=</span><span style="color:#e6db74">&#34;false&#34;</span>
+<span style="color:#a6e22e">timeToIdleSeconds=</span><span style="color:#e6db74">&#34;1800&#34;</span>
+<span style="color:#a6e22e">timeToLiveSeconds=</span><span style="color:#e6db74">&#34;1800&#34;</span>
+<span style="color:#a6e22e">memoryStoreEvictionPolicy=</span><span style="color:#e6db74">&#34;LRU&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/ehcache&gt;</span>
+</code></pre></div><h4 id="1463在mapper指定使用ehcache">14.6.3、在mapper指定使用Ehcache</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;cache</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;org.mybatis.caches.ehcache.EhcacheCache&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p><strong>==spring==</strong></p>
+<ul>
+<li><a href="https://repo.spring.io/release/org/springframework/spring/">https://repo.spring.io/release/org/springframework/spring/</a></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-web --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>5.2.5.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>或者</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-web --&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>5.2.4.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div>
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
